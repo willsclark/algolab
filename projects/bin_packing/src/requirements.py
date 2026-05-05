@@ -1,9 +1,11 @@
 # Import each one of your sorting algorithms below as follows:
 # Feel free to comment out these lines before your algorithms are implemented.
-from algos.best_fit import best_fit, best_fit_decreasing
-from algos.first_fit import first_fit, first_fit_decreasing
-from algos.next_fit import next_fit
-from data_structures.zipzip_tree import Rank, ZipZipTree
+# from algos.best_fit import best_fit, best_fit_decreasing
+# from algos.first_fit import first_fit, first_fit_decreasing
+# from algos.next_fit import next_fit
+from src.data_structures.zipzip_tree import ZipZipTree
+
+Rank = ZipZipTree.Rank
 
 # Details about Gradescope submission:
 

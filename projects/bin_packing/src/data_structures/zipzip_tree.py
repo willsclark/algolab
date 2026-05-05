@@ -22,7 +22,7 @@ class ZipZipTree[KeyType, ValType]:
         left: ZipZipTree.Node | None = None
         right: ZipZipTree.Node | None = None
 
-    @dataclass
+    @dataclass(order=True)
     class Rank:
         """
         Rank is a container representing each node's rank,
@@ -67,6 +67,7 @@ class ZipZipTree[KeyType, ValType]:
         :Returns:
             success: Boolean; if the insert was successful
         """
+        self._size += 1
 
         if rank is None:
             rank = self.get_random_rank()
@@ -75,6 +76,7 @@ class ZipZipTree[KeyType, ValType]:
 
         cur: ZipZipTree.Node = self._root
 
+        prev = None
         while cur is not None and (
             rank < cur.rank or (rank == cur.rank and key > cur.key)
         ):
@@ -82,9 +84,9 @@ class ZipZipTree[KeyType, ValType]:
             if key < cur.key:
                 cur = cur.left
             else:
-                cur.right
+                cur = cur.right
 
-        if cur == self._root:
+        if prev is None:
             self._root = X
         elif key < prev.key:
             prev.left = X
@@ -100,18 +102,19 @@ class ZipZipTree[KeyType, ValType]:
             X.left = cur
         prev = X
 
+        # Unzip
         while cur is not None:
             fix = prev
             if cur.key < key:
-                while cur is not None and cur.key > key:
+                while cur is not None and cur.key < key:
                     prev = cur
                     cur = cur.right
             else:
-                while cur is not None and cur.key < key:
+                while cur is not None and cur.key > key:
                     prev = cur
                     cur = cur.left
 
-            if fix.key > key or (fix == X and prev.key > key):
+            if fix.key > key or (fix is X and prev.key > key):
                 fix.left = cur
             else:
                 fix.right = cur
@@ -127,13 +130,14 @@ class ZipZipTree[KeyType, ValType]:
         """
         return self._find_node(key).val
 
-    def remove(self, key: KeyType) -> bool:
+    def remove(self, key: KeyType):
         """
         Removes a node X from the tree
 
         :Returns: boolean if removal was successful
         """
 
+        self._size -= 1
         X = self._find_node(key)
 
         cur = self._root
@@ -199,7 +203,13 @@ class ZipZipTree[KeyType, ValType]:
         Returns:
             height: the distance from root -> leaf
         """
-        return self._root.rank.geometric_rank if self._root else 0
+
+        def h(node):
+            if node is None:
+                return -1
+            return 1 + max(h(node.left), h(node.right))
+
+        return h(self._root)
 
     def get_depth(self, key: KeyType) -> int:
         """
@@ -207,8 +217,16 @@ class ZipZipTree[KeyType, ValType]:
             depth: (int); the distance from key -> root.
 
         """
-        x = self._find_node(key)
-        return self._height - x.rank.geometric_rank
+        cur = self._root
+        depth = 0
+        while cur is not None and cur.key != key:
+            if key < cur.key:
+                cur = cur.left
+            else:
+                cur = cur.right
+            depth += 1
+
+        return depth
 
     def _bernouli(self, p: Probability) -> int:
         """
@@ -223,6 +241,16 @@ class ZipZipTree[KeyType, ValType]:
         (Assumes the node exists)
         """
         ...
+
+        cur = self._root
+
+        while cur is not None and cur.key != key:
+            if key < cur.key:
+                cur = cur.left
+            else:
+                cur = cur.right
+
+        return cur
 
     def __len__(self) -> int:
         return self._size

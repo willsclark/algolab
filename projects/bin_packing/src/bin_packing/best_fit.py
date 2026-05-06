@@ -6,8 +6,6 @@ type Key = int
 type Val = float
 type Bin = int
 
-DIGITS = 2
-
 
 class BestFitTree(ZipZipTree[Key, Val]):
     def _augment(self, node) -> None:
@@ -47,22 +45,23 @@ def best_fit(
         node = _find_bin(tree, size)
         if node is None:
             bin = num_bins
-            rc: Capacity = round(bin_capacity - size, DIGITS)
+            rc: Capacity = bin_capacity - size
 
             tree.insert(rc, bin)
             free_space.append(rc)
+
             num_bins += 1
         else:
             bin = node.val
             cap = node.key[0]
-            rc: Capacity = round(cap - size, DIGITS)
+            rc: Capacity = cap - size
 
             # AUGMENT by repeatedly removing and reinserting
             tree.remove(cap, bin)
             tree.insert(rc, bin)
 
             free_space[bin] = rc
-            free_space[bin] = round(free_space[bin], DIGITS)
+            free_space[bin] = free_space[bin]
 
         assignment[i] = bin
 

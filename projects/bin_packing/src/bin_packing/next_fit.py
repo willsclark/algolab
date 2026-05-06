@@ -17,17 +17,15 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
                                     you should add one element for each bin that the algorithm creates.
                                     when the function returns, this should indicate the final free space available in each bin.
     """
-    NDIGITS = 2
     bin_capacity = 1.0
     cur_bin = 0
     free_space.append(bin_capacity)
     for i in range(len(items)):
         if not fits(items[i], free_space[cur_bin]):
             cur_bin += 1
-            free_space.append(1.0)
+            free_space.append(bin_capacity)
 
         # put item in current bin
         assignment[i] = cur_bin
         # decrement space
         free_space[cur_bin] -= items[i]
-        free_space[cur_bin] = round(free_space[cur_bin], NDIGITS)

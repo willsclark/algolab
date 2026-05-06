@@ -7,8 +7,6 @@ type Val = float
 
 type Bin = int
 
-DIGITS = 2
-
 
 class FirstFitTree(ZipZipTree[Key, Val]):
     """
@@ -48,16 +46,16 @@ def first_fit(
         node = _find_bin(tree, size)
         if node is None:
             bin_key = num_bins
-            new_node_size = round(bin_capacity - size, DIGITS)
+            new_node_size = bin_capacity - size
             tree.insert(bin_key, new_node_size)
             free_space.append(new_node_size)
             num_bins += 1
         else:
             bin_key = node.key
             node.val -= size
-            node.val = round(node.val, DIGITS)
+            node.val = node.val
             free_space[bin_key] -= size
-            free_space[bin_key] = round(free_space[bin_key], DIGITS)
+            free_space[bin_key] = free_space[bin_key]
             tree._augment(node)
             tree._augment_ancestors(node)
 

@@ -51,6 +51,12 @@ def test_algorithm(
     test_copy = deepcopy(test)
     algorithm(test_copy.items, test_copy.assignments, test_copy.free_space)
 
+    print(f"EXPECTED Assignments:{expected_result.assignments}")
+    print(f"Actual assignments: {test_copy.assignments}")
+
+    print(f"EXPECTED FREE SPACE:{expected_result.free_space}")
+    print(f"actual free space:{test_copy.free_space}")
+
     if test_copy.assignments == expected_result.assignments and is_equal(
         test_copy.free_space, expected_result.free_space
     ):
@@ -365,4 +371,4 @@ def bin_packing_tests():
 
 if __name__ == "__main__":
     zip_tree_tests()
-    # bin_packing_tests()
+    bin_packing_tests()

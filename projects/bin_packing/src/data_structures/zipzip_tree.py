@@ -55,6 +55,10 @@ class ZipZipTree[KeyType, ValType]:
         end = int(log2(self._capacity) ** 3) - 1
         return (0, end) if end >= 1 else (0, 1)
 
+    def _augment(self, node: Node) -> None:
+        """Hook for subclasses -- no-op by default"""
+        pass
+
     def insert(self, key: KeyType, val: ValType, rank: Rank = None):
         """
         Inserts a node x into the Zip tree.
@@ -76,10 +80,13 @@ class ZipZipTree[KeyType, ValType]:
 
         cur: ZipZipTree.Node = self._root
 
+        search_path: list[ZipZipTree.Node] = []
         prev = None
+
         while cur is not None and (
             rank < cur.rank or (rank == cur.rank and key > cur.key)
         ):
+            search_path.append(cur)
             prev = cur
             if key < cur.key:
                 cur = cur.left
@@ -94,6 +101,8 @@ class ZipZipTree[KeyType, ValType]:
             prev.right = X
 
         if cur is None:
+            self._augment(X)  # sets brc to val in FF
+            self._augment_ancestors(X)
             return
 
         if key < cur.key:
@@ -103,6 +112,7 @@ class ZipZipTree[KeyType, ValType]:
         prev = X
 
         # Unzip
+        reached = [X]
         while cur is not None:
             fix = prev
             if cur.key < key:
@@ -118,6 +128,15 @@ class ZipZipTree[KeyType, ValType]:
                 fix.left = cur
             else:
                 fix.right = cur
+            reached.append(fix)
+
+        # Augment all the reached nodes
+        for node in reversed(reached):
+            self._augment(node)
+
+        # Augment the nodes from X up to the root
+        for node in reversed(search_path):
+            self._augment(node)
 
     def find(self, key: KeyType) -> ValType:
         """Searches the zip-zip tree for the item with key
@@ -134,19 +153,21 @@ class ZipZipTree[KeyType, ValType]:
         """
         Removes a node X from the tree
 
-        :Returns: boolean if removal was successful
         """
 
         self._size -= 1
         X = self._find_node(key)
 
+        search_path = []
         cur = self._root
         while key != cur.key:
+            search_path.append(cur)
             prev = cur
             if key < cur.key:
                 cur = cur.left
             else:
                 cur = cur.right
+
         left = cur.left
         right = cur.right
 
@@ -166,17 +187,28 @@ class ZipZipTree[KeyType, ValType]:
         else:
             prev.right = cur
 
+        zipped = []
         while left is not None and right is not None:
             if left.rank >= right.rank:
-                while left is not None and left.rank >= right.rank:
+                while (
+                    left is not None and right is not None and left.rank >= right.rank
+                ):
                     prev = left
                     left = left.right
                 prev.right = right
+                zipped.append(prev)
             else:
-                while left is not None and left.rank < right.rank:
+                while left is not None and right is not None and left.rank < right.rank:
                     prev = right
                     right = right.left
-                    prev.left = left
+                prev.left = left
+                zipped.append(prev)
+
+        for node in reversed(zipped):
+            self._augment(node)
+
+        for node in reversed(search_path):
+            self._augment(node)
 
     def get_random_rank(self) -> ZipZipTree.Rank:
         """
@@ -251,6 +283,18 @@ class ZipZipTree[KeyType, ValType]:
                 cur = cur.right
 
         return cur
+
+    def _augment_ancestors(self, target: Node) -> None:
+        path = []
+        cur = self._root
+        while cur is not target:
+            path.append(cur)
+            if target.key < cur.key:
+                cur = cur.left
+            else:
+                cur = cur.right
+        for node in reversed(path):
+            self._augment(node)
 
     def __len__(self) -> int:
         return self._size

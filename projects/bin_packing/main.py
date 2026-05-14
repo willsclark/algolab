@@ -1,10 +1,12 @@
 from copy import deepcopy
+from pathlib import Path
 from typing import Callable
 
 import numpy as np
 
 import src.analysis as analysis
 import src.bin_packing as bp
+from plot import createfig, load_stats
 
 type Waste = int
 
@@ -14,7 +16,6 @@ type BPItems = list[int]
 SEED = 1234
 INPUT_SIZES = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536]
 NUM_SEQUENCES = 5
-
 RNG = np.random.default_rng(seed=SEED)
 
 ALGOS: list[Callable] = [
@@ -91,8 +92,19 @@ def store_stats():
         om.save_stats(stats)
 
 
+def graph_from_output():
+    for algo in ALGOS:
+        stats_dir = analysis.create_out_dir(algo.__name__)
+
+        stats: analysis.BPStats = load_stats(Path(stats_dir / "stats.json"))
+        fig = createfig(stats)
+        om = analysis.OutputManager(out_dir=stats_dir)
+        om.save_graph(fig)
+
+
 def main() -> None:
-    store_stats()
+    # store_stats()
+    graph_from_output()
 
 
 if __name__ == "__main__":

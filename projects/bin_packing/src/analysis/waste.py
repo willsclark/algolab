@@ -16,6 +16,10 @@ class BinPackingAlgo(Enum):
     FF = "first_fit"
     FFD = "first_fit_decreasing"
 
+    @property
+    def display_name(self) -> str:
+        return self.value.replace("_", " ").title()
+
 
 @dataclass
 class ProblemInstance:

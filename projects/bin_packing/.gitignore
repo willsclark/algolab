@@ -459,6 +459,10 @@ tags
 *.log
 logs/
 
+# OUTPUTS
+*.output
+output/
+
 # OS-generated thumbnails
 Thumbs.db
 ehthumbs.db

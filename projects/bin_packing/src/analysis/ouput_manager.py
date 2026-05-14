@@ -4,7 +4,7 @@ from pathlib import Path
 from matplotlib.figure import Figure
 from matplotlib.pyplot import close
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 JSON = "json"
 PNG = "png"
 

@@ -4,12 +4,9 @@ from enum import Enum
 from pydantic import BaseModel, computed_field
 
 
-def _waste(bins_used: int, total_size: int) -> int:
-    """
-    Returns the waste, W(A) of an algorithm
-    """
-    assert total_size >= bins_used
-    return total_size - bins_used
+def waste(bins_used: int, total_size: float) -> float:
+    assert bins_used >= total_size
+    return bins_used - total_size
 
 
 class BinPackingAlgo(Enum):
@@ -27,13 +24,14 @@ class ProblemInstance:
     free_space: list[float]
 
 
-class _TrialGroup(BaseModel):
-    type Waste = int
-    trials: dict[int, Waste]
+class TrialGroup(BaseModel):
+    type TrialNum = int
+    type Waste = float
+    trials: dict[TrialNum, Waste]
 
     @computed_field
     @property
-    def average(self) -> Waste:
+    def average(self) -> float:
         if not self.trials:
             return 0.0
         count = len(self.trials)
@@ -47,5 +45,6 @@ class BPStats(BaseModel):
     by each algorithm
     """
 
+    type InputSize = int
     algorithm: BinPackingAlgo
-    benchmarks: dict[int, _TrialGroup]
+    benchmarks: dict[InputSize, TrialGroup]

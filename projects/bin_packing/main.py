@@ -108,4 +108,14 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    import src.bin_packing as bp
+
+    items = RNG.uniform(0, 0.65, size=1024).tolist()
+    items_ffd = items.copy()
+    items_bfd = items.copy()
+    a1, f1 = [0] * 1024, []
+    a2, f2 = [0] * 1024, []
+    bp.first_fit_decreasing(items_ffd, a1, f1)
+    bp.best_fit_decreasing(items_bfd, a2, f2)
+    print("FFD bins:", len(f1), "BFD bins:", len(f2))
+    print("assignments match:", a1 == a2)

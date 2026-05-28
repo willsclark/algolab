@@ -55,6 +55,24 @@ class Graph:
         """Returns all the non-zero vertices"""
         return self._adj_set.keys()
 
+    @property
+    def degeneracy_ordering(self) -> list[Node]:
+        n = self._num_nodes
+        output_list = list()
+
+        # d_v for each vertex in G = num of neighbors not in output list, L
+
+        D = []
+        for v in self.vertices:
+            D.append(self.get_vertex_degree(v))
+
+        N_v = list(n)
+
+        k = 0
+
+        for i in range(n):
+            pass
+
     def get_num_nodes(self) -> int:
         return self._num_nodes
 

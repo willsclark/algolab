@@ -55,7 +55,6 @@ def get_diameter(graph: Graph) -> int:
 
 
 def __num_2_edge_paths(graph: Graph) -> int:
-    """"""
     total = 0
     for v in graph.vertices:
         d = graph.get_vertex_degree(v)

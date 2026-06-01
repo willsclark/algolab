@@ -81,9 +81,28 @@ def __num_triangles(graph: Graph):
     return count
 
 
+def _degeneracy_triangles(graph: Graph):
+
+    L, N = graph.degeneracy_ordering
+
+    triangle_count = 0
+
+    for v in L:
+        earlier_neighbors = N[v]
+        # Check every pair (u, w) from N_v
+        for i in range(len(earlier_neighbors)):
+            for j in range(i + 1, len(earlier_neighbors)):
+                u = earlier_neighbors[i]
+                w = earlier_neighbors[j]
+                if graph.has_edge(u, w):  # edge (u, w) exists → triangle
+                    triangle_count += 1
+
+    return triangle_count
+
+
 def get_clustering_coefficient(graph: Graph) -> float:
 
-    return (3 * __num_triangles(graph)) / __num_2_edge_paths(graph)
+    return (3 * _degeneracy_triangles(graph)) / __num_2_edge_paths(graph)
 
 
 def get_degree_distribution(graph: Graph) -> dict[int, int]:

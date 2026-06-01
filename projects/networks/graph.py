@@ -47,7 +47,6 @@ class Graph:
             # Undirected?
             adj_set[v].adjacencies.add(u)
             adj_set[v].edges.add(edge)
-
         return adj_set
 
     @property
@@ -57,21 +56,51 @@ class Graph:
 
     @property
     def degeneracy_ordering(self) -> list[Node]:
-        n = self._num_nodes
-        output_list = list()
 
-        # d_v for each vertex in G = num of neighbors not in output list, L
+        # 1) Initialize an output list, L to be empth
+        L = []
+        in_L = set()
 
-        D = []
+        n = len(self.vertices)
+
+        # 2) Compute a number, d_v, for each v in G. Initially degrees of v
+        d = {v: len(self._adj_set[v].edges) for v in self.vertices}
+
+        # Step 3: D[i] = set of vertices with d_v == i (not yet in L)
+        D = defaultdict(set)
         for v in self.vertices:
-            D.append(self.get_vertex_degree(v))
+            D[d[v]].add(v)
 
-        N_v = list(n)
+        # Step 4: N_v = neighbors of v that appear before v in L
+        N = {v: [] for v in self.vertices}
 
         k = 0
 
-        for i in range(n):
-            pass
+        for _ in range(n):
+            # Find smallest i such that D[i] is nonempty
+            i = 0
+            while not D[i]:
+                i += 1
+
+            # Update degeneracy
+            k = max(k, i)
+
+            # Pick any vertex from D[i], add to front of L
+            v = next(iter(D[i]))
+            D[i].remove(v)
+            L.insert(0, v)
+            in_L.add(v)
+
+            # For each neighbor w of v not already in L
+            for w in self.get_neighbors(v):
+                if w not in in_L:
+                    # Subtract one from d_w and move w in D
+                    D[d[w]].discard(w)
+                    d[w] -= 1
+                    D[d[w]].add(w)
+                    N[v].append(w)
+
+        return L, N
 
     def get_num_nodes(self) -> int:
         return self._num_nodes

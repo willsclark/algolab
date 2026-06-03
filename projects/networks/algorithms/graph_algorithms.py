@@ -2,7 +2,7 @@
 
 from collections import deque
 
-from graph import Graph
+from data_structures.graph import Graph
 
 
 def _bfs(graph: Graph, root: Graph.Node) -> tuple[Graph.Node, int]:

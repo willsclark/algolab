@@ -1,7 +1,7 @@
 from collections.abc import Iterable
 from typing import Collection
 
-import requirements
+import main
 
 # Instructions
 # Some test cases for the Graph class and the graph algorithms can be found in the main block below.
@@ -13,16 +13,16 @@ import requirements
 
 def create_and_verify_graph(
     num_nodes: int, edges: Collection[tuple[int, int]]
-) -> requirements.Graph:
+) -> main.Graph:
     print(f"\nTesting graph = ({num_nodes}, {edges})")
-    graph = requirements.Graph(num_nodes, edges)
+    graph = main.Graph(num_nodes, edges)
     print(f"get_num_nodes(): {graph.get_num_nodes()}, Expected: {num_nodes}")
     print(f"get_num_edges(): {graph.get_num_edges()}, Expected: {len(edges)}")
 
     return graph
 
 
-def verify_neighbors(graph: requirements.Graph, node: int, neighbors: "Iterable[int]"):
+def verify_neighbors(graph: main.Graph, node: int, neighbors: "Iterable[int]"):
     print(
         f"get_neighbors({node}): {sorted(graph.get_neighbors(node))}, Expected: {sorted(neighbors)}"
     )
@@ -62,7 +62,7 @@ def graph_tests():
 def graph_algorithm_tests():
     print("\ntesting graph algorithms\n")
 
-    graph = requirements.Graph(
+    graph = main.Graph(
         10,
         {
             (0, 3),
@@ -81,12 +81,12 @@ def graph_algorithm_tests():
             (8, 9),
         },
     )
-    print(f"get_diameter(): {requirements.get_diameter(graph)}, Expected: 5")
+    print(f"get_diameter(): {main.get_diameter(graph)}, Expected: 5")
     print(
-        f"get_clustering_coefficient(): {requirements.get_clustering_coefficient(graph)}, Expected: 0.4"
+        f"get_clustering_coefficient(): {main.get_clustering_coefficient(graph)}, Expected: 0.4"
     )
     print(
-        f"get_degree_distribution(): {requirements.get_degree_distribution(graph)}, Expected: { {2: 5, 3: 3, 4: 1, 5: 1} }"
+        f"get_degree_distribution(): {main.get_degree_distribution(graph)}, Expected: { {2: 5, 3: 3, 4: 1, 5: 1} }"
     )
 
 

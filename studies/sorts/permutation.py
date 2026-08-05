@@ -4,8 +4,8 @@ import random
 
 class Permutation:
 
-    def __init__(self, seed: int) -> None:
-        self._rng = random.Random(seed)
+    def __init__(self, rng: random.Random) -> None:
+        self._rng = rng
 
     def unif(self, n: int) -> list:
         """

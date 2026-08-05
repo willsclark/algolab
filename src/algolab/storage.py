@@ -1,62 +1,54 @@
-from enum import Enum
+"""Reading and writing experiment artifacts.
+
+Results serialize to a single JSON file per experiment via the pydantic schema;
+figures save alongside. Nothing here is study-specific — the same two calls
+persist sorting, bin-packing, and network results.
+"""
+
+from __future__ import annotations
+
 from pathlib import Path
 
 from matplotlib.figure import Figure
 from matplotlib.pyplot import close
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-JSON = "json"
-PNG = "png"
+from algolab.results import ExperimentResult
 
 
 class OutputError(Exception):
     pass
 
 
-class DirType(Enum):
-    STATS = "stats"
-    GRAPHS = "graph_cmp"
+def output_dir(root: Path, name: str) -> Path:
+    """Return (creating if needed) ``root/output/name``."""
+    out = root / "output" / name
+    out.mkdir(parents=True, exist_ok=True)
+    return out
 
 
-def create_out_dir(algo: str) -> Path:
-    """
-    Creats a directory at output/algo/type
-    """
-    out_dir = PROJECT_ROOT / "output" / algo
-    out_dir.mkdir(parents=True, exist_ok=True)
-    return out_dir
+def save_result(result: ExperimentResult, path: Path) -> None:
+    """Write an :class:`ExperimentResult` to ``path`` as indented JSON."""
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(result.model_dump_json(indent=2))
+    except OSError as e:
+        raise OutputError(f"failed to write result to {path}") from e
 
 
-class OutputManager:
-    def __init__(self, out_dir: Path) -> None:
-        self._out_dir = out_dir
+def load_result(path: Path) -> ExperimentResult:
+    """Read an :class:`ExperimentResult` back from JSON."""
+    try:
+        return ExperimentResult.model_validate_json(path.read_text())
+    except OSError as e:
+        raise OutputError(f"failed to read result from {path}") from e
 
-    def save_stats(self, stats) -> None:
-        """Saves a list of stats into a .JSON file
-        following the AlgoStats JSON structure.
 
-        STORAGE_DIR : ../output/algo/stats.json
-        """
-        stats_path = self._out_dir / f"{DirType.STATS.value}.{JSON}"
-        try:
-            stats_path.parent.mkdir(parents=True, exist_ok=True)
-            with Path.open(stats_path, "w") as f:
-                f.write(stats.model_dump_json(indent=4))
-        except OSError as e:
-            msg = f"Failed to store {stats.sort} into {self._out_dir}"
-            raise OutputError(msg) from e
-
-    def save_graph(self, graph: Figure) -> None:
-        """
-        Saves graph into a .png file
-
-        STORAGE_DIR : ../output/algo/graph.png
-        """
-
-        try:
-            graph_path = self._out_dir / f"{DirType.GRAPHS.value}.{PNG}"
-            graph.savefig(graph_path)
-            close(graph)
-        except Exception as e:
-            msg = f"Failed to store graph into {self._out_dir}"
-            raise OutputError(msg) from e
+def save_figure(fig: Figure, path: Path) -> None:
+    """Save and close a Matplotlib figure."""
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(path)
+    except OSError as e:
+        raise OutputError(f"failed to write figure to {path}") from e
+    finally:
+        close(fig)

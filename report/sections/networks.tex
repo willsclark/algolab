@@ -1,33 +1,17 @@
-\documentclass[11pt]{article}
-\input{tex_settings/preamble}
-\input{tex_settings/macros}
-\input{tex_settings/letterfonts}
-\usepackage{float}
-\title{\textbf{Project III: Network Algorithms}}
-\author{Will Clark}
-\date{\today}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{subcaption}
-\usepackage{float}
-
-\begin{document}
-\maketitle
-
-\begin{abstract}
+% Migrated from studies/networks/report/project3_writeup.tex
+\section{Network Algorithms}
 	This report analyzes structural properties of Barabasi-Albert randomly generated
     networks. It explores diameter, clustering, and the degree distribution 
     benchmarked on empirical data/results.
-\end{abstract}
 
-\section{Introduction}
+\subsection{Introduction}
 % Algorithmic Experiments of Real-World Phenomena
 Scientists from all fields are interacting and collaborating to understand the 
 importance of, and structure behind, graphs and networks. Graphs enable us to model 
 social interactions, design complex distributed networks, and model many biologial 
 interactions. In short, Networks are \textit{everywhere}. 
 
-\subsection{Structure}
+\subsubsection{Structure}
 We aren't just concerned with graphs as a \textit{construct}, but as a medium to 
 exploit certain structures. These structures, \textit{topologies}, reveal 
 communities, "important" vertices, and many more aspects. This report
@@ -48,7 +32,7 @@ Formulated as a graph problem, we say the small world network as a small "diamet
 As such, the ability to classify graphs based on their structure has many real-world
 applications, and is the backbone of analysis in many fields.  
 
-\subsection{Barabasi-Albert}
+\subsubsection{Barabasi-Albert}
 % Explain Barabasi-Albert
 Gathering graph's is not as trivial as you may think, and as it turns out, being
 able to \textit{randomly} generate network structures to simulate real-world
@@ -56,7 +40,7 @@ phenomena is of paramount imporance. As such, this report examines one way of
 generating these graphs: \textbf{Barabasi-Albert}. 
 
 
-\subsubsection{Pseudocode}
+\paragraph{Pseudocode}
 \begin{algorithm}[H]
     \caption{Barabási-Albert (Preferential Attachment)}\label{alg:pa}
     \begin{algorithmic}[1] % Added line numbering for clarity
@@ -96,9 +80,9 @@ is
 	\bbP \left\{ X \right\} \propto \frac{1}{X^\beta} \qquad \beta \in \bbR
 \end{equation*}
 \newpage
-\section{Degree Distributions}
+\subsection{Degree Distributions}
 
-\subsection{Definition}
+\subsubsection{Definition}
 
 The degree distribution $\bbP(d)$ of a network $G = (V, E)$ is the fraction of nodes
 with degree $d$ in the network.
@@ -112,7 +96,7 @@ conjectured to follow a power law. In that case, we say the network is \emph{sca
 free}, since restricting the network to a subset of its nodes is statistically 
 similar to the network in its totality. 
 
-\subsection{Psuedocode}
+\subsubsection{Psuedocode}
 
 \begin{algorithm}[H]
 	\caption{Degree Distribution} \label{alg:dd}
@@ -128,85 +112,37 @@ similar to the network in its totality.
 	\end{algorithmic}
 \end{algorithm}
 \newpage
-\subsection{Analysis}
+\subsubsection{Analysis}
 
 
 
 
 \begin{figure}[H]
     \centering
-    % --- Row 1: n = 1000 ---
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{output/deg_dist/figure_1.png}
-        \caption{$n = 1000$ (Left)}
-        \label{fig:ll_1000}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{output/deg_dist/figure_2.png}
-        \caption{$n = 1000$ (Right)}
-        \label{fig:llg_1000}
-    \end{subfigure}
-    
-    \vspace{0.3cm} % Adds vertical space between rows
-
-    % --- Row 2: n = 10000 ---
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{output/deg_dist/figure_3.png}
-        \caption{$n = 10000$ (Left)}
-        \label{fig:ll_10000}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{output/deg_dist/figure_4.png}
-        \caption{$n = 10000$ (Right)}
-        \label{fig:llg_10000}
-    \end{subfigure}
-
-    \vspace{0.3cm}
-
-    % --- Row 3: n = 100000 ---
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{output/deg_dist/figure_5.png}
-        \caption{$n = 100000$ (Left)}
-        \label{fig:ll_100000}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{output/deg_dist/figure_6.png}
-        \caption{$n = 100000$ (Right)}
-        \label{fig:llg_100000}
-    \end{subfigure}
-
-    % --- Main Caption and Label ---
-    \caption{Degree distributions across different network sizes ($n = 1000, 10000, 100000$).}
+    \includegraphics[width=0.8\textwidth]{plots/degree_dist.png}
+    \caption{Degree distributions across different network sizes ($n = 1000, 10000, 100000$),
+    plotted on log-log axes.}
     \label{fig:all_degree_distributions}
 \end{figure}
 The degree distribution was analyzed for $n = 1000$, $n = 10000$, and $n = 100000$
-vertices. On the left, "(Left)", of the figure, each distribution is plotted on
-a lin-lin scale. We can see the \textbf{heavy right skew} characteristic of a power
-law, but its virtually impossible to quantify the exponent $\beta$ is. Transforming 
-the data to a Log-Log scale exposes a clear linear trend, confirming \emph{scale
-free} behavior. We fit a slope of $-1.61, -1.87, -2.04$ for each $n$ value 
-respectively. Consequently, as $n \rightarrow N$, the degree distributions converge
-towards steeper power-law decay. As such, the \emph{Barabasi-Albert} random graphs
-follow a \textbf{power law}.
+vertices, with each distribution overlaid on a single log-log plot. On these axes a
+power law appears as a straight line, and all three sizes exhibit the same clear
+linear trend, confirming \emph{scale free} behavior. The \textbf{heavy right skew}
+characteristic of a power law is evident: a large number of low-degree vertices coexist
+with a handful of very high-degree hubs (the tail extends past $k = 2^{10}$ for
+$n = 100000$). As $n$ grows the distribution simply extends further along the same
+slope, so the shape is preserved across scales. As such, the \emph{Barabasi-Albert}
+random graphs follow a \textbf{power law}.
 
 
 
 
 
 
-\section{Clustering Coefficients}
+\subsection{Clustering Coefficients}
 
 
-\subsection{Definition}
+\subsubsection{Definition}
 
 The clustering coefficient is
 \[
@@ -214,7 +150,7 @@ The clustering coefficient is
 \]
 The denominator is cheap; the numerator is computed via a degeneracy ordering so that
 triangle counting runs in $O(d^2 n) = O(dm)$ expected time rather than the naïve $O(n^3)$.
-\subsection{Psuedocode}
+\subsubsection{Psuedocode}
 \begin{algorithm}
     \caption{Number of 2-Edge Paths}\label{alg:paths}
     \begin{algorithmic}[1]
@@ -294,39 +230,39 @@ triangle counting runs in $O(d^2 n) = O(dm)$ expected time rather than the naïv
 
 
 
-\subsection{Analysis}
+\subsubsection{Analysis}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{output/cluster/figure_1.png}
-    \caption{Average clustering vs $n$}
+    \includegraphics[width=0.9\textwidth]{plots/clustering.png}
+    \caption{Average clustering vs $n$ (log-log axes) with a fitted power law.}
     \label{fig:cluster}
 \end{figure}
 
-The clustering coefficient, $\mcC$, measures how "cliquey" the network is. As shown 
-in  \ref{fig:cluster}, as $n$ increases, $\mcC$ decreases. This makes sense,
-since as we add more vertices via BA [\ref{alg:pa}], the \emph{still} form 
-connections to \emph{only} $d$ other vertices, but the denominator scales with $n$. 
+The clustering coefficient, $\mcC$, measures how "cliquey" the network is. As shown
+in Figure~\ref{fig:cluster}, as $n$ increases, $\mcC$ decreases. This makes sense,
+since as we add more vertices via BA [\ref{alg:pa}], they \emph{still} form
+connections to \emph{only} $d$ other vertices, but the denominator scales with $n$.
 
-I plotted a $\frac{1}{\log_2(n)}$ reference (the legend is incorrect), which suggests
-that 
+On log-log axes the measurements fall on a near-perfect straight line, so $\mcC$
+follows a \textbf{power law} rather than an exponential. The fitted exponent is
 \begin{equation*}
-\mcC \propto \frac{1}{2^x}
+\mcC \propto n^{-0.74} \qquad (R^2 = 0.999)
 \end{equation*}
-Since the $x$ axis maps the metric logarithmically, we can isolate the scaling 
-function relative to the visual coordinates by substituting $n = 2^x$. Consequently,
-the exponential term in the denominator dominates the numerator, and $\mcC$ mimics
-pure exponential decay.
+The extremely tight fit ($R^2 = 0.999$) confirms that the decay is polynomial in $n$:
+each doubling of the graph size multiplies the clustering coefficient by a constant
+factor of $2^{-0.74} \approx 0.6$, so triangles become steadily rarer as the graph
+grows but never vanish abruptly.
 
-\section{Diameters}
-\subsection{Definition}
+\subsection{Diameters}
+\subsubsection{Definition}
 The diameter, $d$, is the greatest distance between any pair of vertices, namely
 \begin{equation*}
     d = \max_{v \in G.V}\max_{u \in G.V} d(v, u)
 \end{equation*}
 where $d \colon G.V \times G.V \rightarrow \bbR^+ \cup \{0\}$. 
 
-\subsection{Psuedocode}
+\subsubsection{Psuedocode}
 
 \begin{algorithm}
     \caption{Diameter}\label{alg:dh2}
@@ -352,23 +288,28 @@ where $d \colon G.V \times G.V \rightarrow \bbR^+ \cup \{0\}$.
     
 \end{algorithm}
 
-\subsection{Analysis}
+\subsubsection{Analysis}
 
 \begin{figure}[H]
    \centering
-   \includegraphics[width=0.8\textwidth]{output/diam/figure_1.png}
-   \caption{Average Diameter vs $n$}
+   \includegraphics[width=0.8\textwidth]{plots/diameter.png}
+   \caption{Average Diameter vs $n$ (log-log axes) with a fitted power law.}
    \label{fig:diam}
 \end{figure}
 
-As shown in Figure~\ref{fig:diam}, the average diameter increases with $n$,
-roughly tracking the $\log(n)$ reference line on the lin-log scale. This confirms
-$d \sim \Theta(\log n)$: preferential attachment produces high-degree hubs that
-act as shortcuts, keeping pairwise distances short even as the graph grows.
-The jagged effect visible at certain values of $n$ is an artifact of diameter
-being integer-valued, since the average must accumulate enough samples before
-incrementing to the next integer. As such, the diameter \textbf{is changing as
-a function of n}.
+As shown in Figure~\ref{fig:diam}, the average diameter increases with $n$, but only
+very slowly: over roughly three orders of magnitude in $n$ the diameter barely triples.
+Fitting a power law on log-log axes yields a tiny exponent,
+\begin{equation*}
+    d \propto n^{0.12} \qquad (R^2 = 0.834),
+\end{equation*}
+and such a small exponent with only a moderate fit is exactly the signature of
+sub-polynomial, essentially \emph{logarithmic}, growth: preferential attachment
+produces high-degree hubs that act as shortcuts, keeping pairwise distances short
+even as the graph grows. The jagged, stair-step effect visible at certain values of
+$n$ is an artifact of the diameter being integer-valued, since the average must
+accumulate enough samples before incrementing to the next integer. As such, the
+diameter \textbf{is changing as a function of $n$}, just far more slowly than any
+power of $n$.
 
 
-\end{document}

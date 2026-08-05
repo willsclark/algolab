@@ -1,22 +1,8 @@
-\documentclass[11pt]{article}
+% Migrated from studies/sorts/sorts-writeup/writeup.tex
+\section{Sorting Algorithms}
+This report analyzes the empirical running times of insertion sort, several variations of shell sort, Tim-sort, and skip-list sort with their theoretical complexity. Each algorithm is measured across three input distributions, namely: uniformly distributed, nearly-sorted, and two-alternating. Finally, I declare a best algorithm.
 
-\input{tex_settings/letterfonts}
-\input{tex_settings/macros}
-\input{tex_settings/preamble}
-\usepackage{verbatim}
-\usepackage{subcaption}
-\title{CS165 Project 1: Analyzing Sorting Algorithms}
-\author{Will Clark}
-\date{\today}
-
-\begin{document}
-\maketitle
-
-\begin{abstract}
-	This report analyzes the empirical running times of insertion sort, several variations of shell sort, Tim-sort, and skip-list sort with their theoretical complexity. Each algorithm is measured across three input distributions, namely: uniformly distributed, nearly-sorted, and two-alternating. Finally, I declare a best algorithm.
-\end{abstract}
-
-\section{Introduction}
+\subsection{Introduction}
 Sorting algorithms are the \emph{foundation} of computer science. As per Donald Knuth, "virtually every important aspect of programming arises somewhere in the context of sorting or searching!" And not only that, the speed at which we can sort data is often the limiting factor in modern advancements.
 When discussing the "speed" of an algorithm, a natural crossroads appears: \emph{theoretical} speed, or \emph{practical} speed. This report seeks to derive insights from theoretical explanations, and apply them to empirical results. The canonical choice for analysis is \emph{time vs. input size}, but I'd like to append \emph{comparison count vs. input size} to our analysis. Both cases are plotted on log-log scales to make spotting power-law ($T(n) = cn^k$) running times easier. The below algorithms -- and theoretical (worst-case) running times -- are listed for reference later.
 \begin{figure}[ht]
@@ -42,9 +28,9 @@ When discussing the "speed" of an algorithm, a natural crossroads appears: \emph
 	\label{fig:sort-complexities}
 \end{figure}
 
-\section{Setup}
+\subsection{Setup}
 
-\subsection{Input Distributions}
+\subsubsection{Input Distributions}
 A \texttt{Permutation} class was created to handle all input
 distributions. Each \texttt{Permutation} instance stores a
 \texttt{random.Random(SEED)} into \texttt{self.\_rng}.
@@ -55,15 +41,15 @@ two-alternating sequence ($1, 3, 5, \dots, n-1, 2, 4, 6, \dots, n$),
 respectively. Since Python implements the Mersenne Twister for its random
 number generation, we don't have to worry about any LCG-adjacent issues.
 
-\subsection{Data Collection}
+\subsubsection{Data Collection}
 I used \texttt{Pydantic} to store comparisons and time per iteration for every algorithm into \texttt{JSON}.
 Pydantic gave me more flexibility than the suggested \texttt{csv} file in the notes. I tested each of the algorithms for $30$ trials, on input sizes $16, 32, 64, 128..., 16384$ as to align them with a $\log_2$ axis when graphing.
 
-\subsection{Graphing}
+\subsubsection{Graphing}
 
 Using the \texttt{JSON} data, I generated log-log plots for \emph{Comparisons vs. Input Size}, and \emph{Time(s) vs. Input Size} using \texttt{Matplotlib.pyplot}. Each plot has three best fit lines, one for each input distribution. To avoid cluttering, I am only including the \emph{Time(s) vs. Input Size} plots, but will reference the other graphs if needed.
 
-\section{Insertion Sort}
+\subsection{Insertion Sort}
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.6\textwidth]{plots/is_time}
@@ -75,7 +61,7 @@ Take $c$ to be the coefficient in front of $\log N$. Insertion sort performed th
 % distributions. Report the slope of the best-fit line on the asymptotic tail
 % for each distribution and interpret the exponent.
 
-\section{Shellsort Variants}
+\subsection{Shellsort Variants}
 % 15 points. Log-log plot(s) of each Shellsort gap sequence across all three
 % input distributions. Report slopes and interpret.
 \begin{figure}[ht]
@@ -120,7 +106,7 @@ Take $c$ to be the coefficient in front of $\log N$. Insertion sort performed th
 	\label{fig:shellsort-variants}
 \end{figure}
 In all of the shell-sort variations, the \textbf{nearly-sorted input took the least time}, boasting values of $c = 1.2015, 1.1899, 1.1956, 1.2614, 1.1843$ for each variant, respectively. \textbf{A003462} was the \textbf{best among all variants for nearly sorted and two-alternating} inputs. \textbf{Hibbard} was the \textbf{best for uniform} inputs. Here's where things get strange, Shell's original formulation has empirical time complexity for uniform, nearly sorted, and two alternating of $\mcO_{emp}(n^{1.4102}),  \mcO_{emp}(n^{1.2015}), \mcO_{emp}(n^{1.2079})$, which is much less than its theoretical $\mcO(n^2)$ bound. This allows me to conclude that on the average case, Shell-sort is quite an efficient sort. Another observation is that A003586 is almost \emph{input-agnostic}, in the sense that each input produces the same, consistent $\mcO(n^{\approx 1.26})$ time bound. Since the 3-smooth gaps $\{2^a \cdot 3^b\}$ are dense across all scales, no input permutation can consistently evade early reduction passes, yielding stable $\mcO(n^{\approx 1.26})$ regardless of input structure.
-\section{Timsort}
+\subsection{Timsort}
 \newpage
 \begin{figure}[ht]
 	\centering
@@ -142,7 +128,7 @@ The literature tells us that Tim Sort runs in $\mcO(n + n\mcH)\subseteq \mcO(n\l
 % 15 points. Log-log plot(s) of Timsort across all three input distributions.
 % Report slopes and interpret.
 
-\section{Skip List Sort}
+\subsection{Skip List Sort}
 \begin{figure}[ht]
 	\centering
 	\begin{subfigure}{0.48\textwidth}
@@ -163,7 +149,7 @@ Skip sort performs incredibly well on all input distributions, validating its "a
 
 Let us now compare skip sort to the rest of the algorithms on each input distribution. For \textbf{uniform}, skip sort outperforms every sort except for Tim sort, and by similar reasoning as \emph{Section 5}, we can assume an $\mcO(n \log n)$ run time, which is strictly less than Tim Sort. For \textbf{Almost Sorted}, we only lose to Tim sort in for runtime complexity, but for comparisons we fall middle of the pack. For \textbf{Two-Alternating}, we fall right behind Tim Sort but beat everyone else.
 
-\section{Input Distribution Sensitivity}
+\subsection{Input Distribution Sensitivity}
 % 15 points. Which algorithms are sensitive to input distribution, and which
 % are roughly distribution-invariant? Tie observations back to the plots.
 To address sensitivity, I split the algorithms into two camps: \emph{input-sensitive} (whose empirical exponent $c$ varies meaningfully across distributions) and \emph{input-agnostic} (whose $c$ is roughly constant). I use the spread $\Delta c = c_{\max} - c_{\min}$ across the three distributions as a rough proxy.
@@ -174,9 +160,8 @@ To address sensitivity, I split the algorithms into two camps: \emph{input-sensi
 
 In summary, sensitivity tracks the algorithm's ability to exploit existing order. Insertion sort and Tim sort are the most adaptive (and thus most sensitive); A003586 Shellsort is the least adaptive (and thus most agnostic); skip-list sort sits in the middle, gaining little from structure but losing little to the lack of it.
 
-\section{Best Algorithm}
+\subsection{Best Algorithm}
 % 15 points. Which algorithm do you think is best, and why? Is it optimal, or
 % could something else (e.g., radix sort, introsort) do better? Justify.
 \textbf{Tim Sort} is the best algorithm we studied, since it adapts to the input distribution's structure and runs incredibly fast. From a philosophical standpoint, there \textbf{cannot} be any "best" sorting algorithm, since the context in which you'd use a specific sort is non-static. Also, upon a simple Google search, Powersort replaced Tim Sort in \texttt{Python 3.11}, so even in its general domain, Tim-Sort is not the best.
 
-\end{document}

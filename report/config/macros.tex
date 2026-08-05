@@ -1,0 +1,142 @@
+%% From SeniorMars lecture template
+
+%From M275 "Topology" at SJSU
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\taking}[1]{\xrightarrow{#1}}
+\newcommand{\inv}{^{-1}}
+
+%From the USAMO .tex files
+\newcommand{\ts}{\textsuperscript}
+\newcommand{\dg}{^\circ}
+\newcommand{\ii}{\item}
+
+% % From Math 55 and Math 145 at Harvard
+\newenvironment{subproof}[1][Proof]{%
+\begin{proof}[#1] \renewcommand{\qedsymbol}{$\blacksquare$}}%
+{\end{proof}}
+
+\newcommand{\liff}{\leftrightarrow}
+\newcommand{\lthen}{\rightarrow}
+\newcommand{\opname}{\operatorname}
+\newcommand{\surjto}{\twoheadrightarrow}
+\newcommand{\injto}{\hookrightarrow}
+\newcommand{\On}{\mathrm{On}} % ordinals
+\DeclareMathOperator{\img}{im} % Image
+\DeclareMathOperator{\Img}{Im} % Image
+% \DeclareMathOperator{\coker}{coker} % Cokernel
+% \DeclareMathOperator{\Coker}{Coker} % Cokernel
+% \DeclareMathOperator{\Ker}{Ker} % Kernel
+\DeclareMathOperator{\rank}{rank}
+% \DeclareMathOperator{\Spec}{Spec} % spectrum
+% \DeclareMathOperator{\Tr}{Tr} % trace
+% \DeclareMathOperator{\pr}{pr} % projection
+% \DeclareMathOperator{\ext}{ext} % extension
+% \DeclareMathOperator{\pred}{pred} % predecessor
+\DeclareMathOperator{\dom}{dom} % domain
+\DeclareMathOperator{\ran}{ran} % range
+% \DeclareMathOperator{\Hom}{Hom} % homomorphism
+% \DeclareMathOperator{\Mor}{Mor} % morphisms
+% \DeclareMathOperator{\End}{End} % endomorphism
+%
+\newcommand{\eps}{\epsilon}
+\newcommand{\veps}{\varepsilon}
+\newcommand{\ol}{\overline}
+\newcommand{\ul}{\underline}
+\newcommand{\wt}{\widetilde}
+\newcommand{\wh}{\widehat}
+\newcommand{\vocab}[1]{\textbf{\color{blue} #1}}
+\providecommand{\half}{\frac{1}{2}}
+\newcommand{\dang}{\measuredangle} %% Directed angle
+\newcommand{\ray}[1]{\overrightarrow{#1}}
+\newcommand{\seg}[1]{\overline{#1}}
+\newcommand{\arc}[1]{\wideparen{#1}}
+
+\DeclareMathOperator{\cis}{cis}
+\DeclareMathOperator*{\lcm}{lcm}
+\DeclareMathOperator*{\argmin}{arg min}
+\DeclareMathOperator*{\argmax}{arg max}
+
+\newcommand{\cycsum}{\sum_{\mathrm{cyc}}}
+\newcommand{\symsum}{\sum_{\mathrm{sym}}}
+\newcommand{\cycprod}{\prod_{\mathrm{cyc}}}
+\newcommand{\symprod}{\prod_{\mathrm{sym}}}
+\newcommand{\Qed}{\begin{flushright}\qed\end{flushright}}
+\newcommand{\parinn}{\setlength{\parindent}{1cm}}
+\newcommand{\parinf}{\setlength{\parindent}{0cm}}
+% \newcommand{\norm}{\|\cdot\|}
+\newcommand{\inorm}{\norm_{\infty}}
+\newcommand{\opensets}{\{V_{\alpha}\}_{\alpha\in I}}
+\newcommand{\oset}{V_{\alpha}}
+\newcommand{\opset}[1]{V_{\alpha_{#1}}}
+\newcommand{\lub}{\text{lub}}
+
+% OD - Ordinary derivates
+\newcommand{\od}[2]{\frac{\mathrm d #1}{\mathrm d #2}}
+\newcommand{\oD}[3]{\frac{\mathrm d^{#1} #2}{\mathrm d {#3}^{#1}}}
+% Ordinary derivates displaystyle with dfrac
+\newcommand{\odd}[2]{\dfrac{\mathrm d #1}{\mathrm d #2}}
+\newcommand{\oDd}[3]{\dfrac{\mathrm d^{#1} #2}{\mathrm d {#3}^{#1}}}
+
+% PD - Partial derivates
+\newcommand{\del}{\partial}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pD}[3]{\frac{\partial^{#1} #2}{\partial {#3}^{#1}}}
+% Partial derivates displaystyle with dfrac
+\newcommand{\pdd}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\pDd}[3]{\dfrac{\partial^{#1} #2}{\partial {#3}^{#1}}}
+
+%%%
+\newcommand{\lm}{\lambda}
+\newcommand{\uin}{\mathbin{\rotatebox[origin=c]{90}{$\in$}}}
+\newcommand{\usubset}{\mathbin{\rotatebox[origin=c]{90}{$\subset$}}}
+\newcommand{\lt}{\left}
+\newcommand{\rt}{\right}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\exs}{\exists}
+\newcommand{\st}{\strut}
+\newcommand{\dps}[1]{\displaystyle{#1}}
+
+\newcommand{\sol}{\setlength{\parindent}{0cm}\textbf{\textit{Solution:}}\setlength{\parindent}{1cm} }
+\newcommand{\solve}[1]{\setlength{\parindent}{0cm}\textbf{\textit{Solution: }}\setlength{\parindent}{1cm}#1 \Qed}
+
+% Norm and absolute value (auto-sizing)
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\normp}[2]{\left\lVert #1 \right\rVert_{#2}}  % p-norm
+
+% Inner product
+\newcommand{\inner}[2]{\left\langle #1,\, #2 \right\rangle}
+
+% Sequences and subsequences
+\newcommand{\seq}[2]{\left(#1_{#2}\right)_{#2=1}^{\infty}}
+% e.g. \seq{x}{n}
+\newcommand{\subseq}[2]{\left(#1_{#2_k}\right)_{k=1}^{\infty}}
+
+% % Limsup / liminf
+% \DeclareMathOperator*{\limsup}{lim\,sup}
+% \DeclareMathOperator*{\liminf}{lim\,inf}
+
+% Closure, interior, boundary
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\interior}[1]{{#1}^{\circ}}
+\newcommand{\boundary}{\partial}   % \partial already exists, but aliasing is handy
+
+% Open/closed intervals
+\newcommand{\ooint}[2]{\left(#1,\,#2\right)}
+\newcommand{\ocint}[2]{\left(#1,\,#2\right]}
+\newcommand{\coint}[2]{\left[#1,\,#2\right)}
+\newcommand{\ccint}[2]{\left[#1,\,#2\right]}
+
+
+\DeclareMathOperator*{\Sup}{sup}
+\DeclareMathOperator*{\Inf}{inf}
+
+% Convergence arrows
+\newcommand{\convto}{\xrightarrow{\;\;}}          % general
+\newcommand{\uconv}{\rightrightarrows}             % uniform convergence
+\newcommand{\wconv}{\xrightharpoonup{\;\;}}        % weak convergence (functional analysis)
+
+% Big-O / little-o
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\smallo}{o}
+

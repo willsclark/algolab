@@ -3,7 +3,7 @@ from enum import Enum
 from pydantic import BaseModel, computed_field
 
 
-class Sort(Enum):
+class Sort(str, Enum):
     SKIP = "skip_sort"
     TIM = "tim_sort"
     INSERTION = "insertion_sort"
@@ -14,7 +14,7 @@ class Sort(Enum):
     SHELL_5 = "shell_sort5"
 
 
-class PermutationType(Enum):
+class PermutationType(str, Enum):
     UNIFORM = "unif"
     NEAR_SORTED = "near_sorted"
     TWO_ALTERNATING = "two_alt"

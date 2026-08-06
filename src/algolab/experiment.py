@@ -1,16 +1,4 @@
-"""Defining and running experiments.
-
-A study describes its work with an :class:`Experiment` and hands it to
-:func:`run_experiment`. The runner owns the triple loop (variant × condition ×
-size), the per-trial seeding, and the assembly of an :class:`ExperimentResult`.
-A study only writes a ``run_trial`` function: given a variant, a condition, a
-size, and a seeded RNG, return one trial's metrics.
-
-Reproducibility and fairness both fall out of deterministic seeding. The RNG
-for a trial is derived from ``(seed, condition, size, trial)`` — *not* the
-variant — so different variants at the same cell see identical inputs, and a
-re-run reproduces every number exactly.
-"""
+"""Defining and running experiments."""
 
 from __future__ import annotations
 
@@ -76,10 +64,7 @@ def _derive_seed(master: int, condition: str, size: int, trial: int) -> int:
 
 def _check_metrics(measured: dict[str, float], expected: list[str]) -> dict[str, float]:
     if set(measured) != set(expected):
-        msg = (
-            f"run_trial returned metrics {sorted(measured)}, "
-            f"expected {sorted(expected)}"
-        )
+        msg = f"run_trial returned metrics {sorted(measured)}, expected {sorted(expected)}"
         raise ValueError(msg)
     return measured
 

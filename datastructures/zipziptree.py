@@ -83,9 +83,7 @@ class ZipZipTree[KeyType, ValType]:
         search_path: list[ZipZipTree.Node] = []
         prev = None
 
-        while cur is not None and (
-            rank < cur.rank or (rank == cur.rank and key > cur.key)
-        ):
+        while cur is not None and (rank < cur.rank or (rank == cur.rank and key > cur.key)):
             search_path.append(cur)
             prev = cur
             if key < cur.key:
@@ -190,9 +188,7 @@ class ZipZipTree[KeyType, ValType]:
         zipped = []
         while left is not None and right is not None:
             if left.rank >= right.rank:
-                while (
-                    left is not None and right is not None and left.rank >= right.rank
-                ):
+                while left is not None and right is not None and left.rank >= right.rank:
                     prev = left
                     left = left.right
                 prev.right = right

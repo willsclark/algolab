@@ -1,9 +1,4 @@
-"""algolab — a small framework for empirical algorithm analysis.
-
-A study defines a ``run_trial`` and an :class:`Experiment`; the framework runs
-the trials, aggregates them, fits empirical complexities with bootstrap
-confidence intervals, and plots and stores the results.
-"""
+"""algolab: a small framework for empirical algorithm analysis."""
 
 from algolab.analysis import FitRow, fit_table, format_fit_table
 from algolab.experiment import (

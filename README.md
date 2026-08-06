@@ -5,7 +5,7 @@
 **A small framework for empirical algorithm analysis — and three studies built on it.**
 
 Theory tells you an algorithm is `O(n log n)`; algolab tells you what the exponent
-*actually is* on your machine, with a confidence interval. Each study registers its
+_actually is_ on your machine, with a confidence interval. Each study registers its
 algorithms, input generators, and metrics; the framework runs the trials, aggregates
 them, fits an empirical power law `T(n) = c · n^k` with bootstrap confidence intervals,
 and plots and stores the results.
@@ -15,16 +15,16 @@ and plots and stores the results.
 Every exponent below is estimated empirically — measured, fit in log-log space, and
 bracketed by a 95% bootstrap confidence interval — then checked against theory.
 
-| Study | Finding | Empirical exponent |
-|---|---|---|
-| **Sorting** | Insertion sort is quadratic on random input… | comparisons ~ `n^1.99` |
-| | …but near-linear when the input is nearly sorted | `n^1.13` |
-| | Timsort collapses to linear on a two-run input | `n^1.00` [1.00, 1.00] |
-| **Bin packing** | Next-fit wastes space linearly in `n` | waste ~ `n^1.00` |
-| | First/best-fit do far better | `n^0.67` |
-| | Sorting first (FFD/BFD) makes waste nearly flat | `n^0.01` |
-| **Networks** | Barabási–Albert graphs are small-world (diameter grows ~`log n`) | ≈ flat |
-| | …and their clustering vanishes as they grow | `n^-0.72` |
+| Study           | Finding                                                          | Empirical exponent     |
+| --------------- | ---------------------------------------------------------------- | ---------------------- |
+| **Sorting**     | Insertion sort is quadratic on random input…                     | comparisons ~ `n^1.99` |
+|                 | …but near-linear when the input is nearly sorted                 | `n^1.13`               |
+|                 | Timsort collapses to linear on a two-run input                   | `n^1.00` [1.00, 1.00]  |
+| **Bin packing** | Next-fit wastes space linearly in `n`                            | waste ~ `n^1.00`       |
+|                 | First/best-fit do far better                                     | `n^0.67`               |
+|                 | Sorting first (FFD/BFD) makes waste nearly flat                  | `n^0.01`               |
+| **Networks**    | Barabási–Albert graphs are small-world (diameter grows ~`log n`) | ≈ flat                 |
+|                 | …and their clustering vanishes as they grow                      | `n^-0.72`              |
 
 ## Quickstart
 
@@ -62,20 +62,20 @@ al.plot_experiment(result, "insertion_sort", "comparisons")
 ```
 
 **Reproducibility and fairness come for free.** Each trial's RNG is derived
-deterministically from `(seed, condition, size, trial)` — *not* the variant — so every
+deterministically from `(seed, condition, size, trial)` — _not_ the variant — so every
 algorithm is measured on identical inputs, and a re-run reproduces every number exactly.
 
 ## The framework (`src/algolab/`)
 
-| Module | Responsibility |
-|---|---|
-| `experiment.py` | `Experiment` spec, `run_experiment` (the trial loop), `Registry`, deterministic seeding |
-| `results.py` | Unified result schema (`ExperimentResult` → `Cell` → `Aggregate`); metrics are a generic `dict[str, float]`, so all three studies share one schema |
-| `measure.py` | Timing methodology — warmup, `perf_counter_ns`, GC disabled, median + IQR over repeats |
-| `fit.py` | Power-law estimation with bootstrap confidence intervals on the exponent |
-| `analysis.py` | `fit_table` / `format_fit_table` — the payoff layer |
-| `plot.py` | Log-log plotting with fitted-curve overlays |
-| `storage.py` | JSON round-trip persistence and figure saving |
+| Module          | Responsibility                                                                                                                                     |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `experiment.py` | `Experiment` spec, `run_experiment` (the trial loop), `Registry`, deterministic seeding                                                            |
+| `results.py`    | Unified result schema (`ExperimentResult` → `Cell` → `Aggregate`); metrics are a generic `dict[str, float]`, so all three studies share one schema |
+| `measure.py`    | Timing methodology — warmup, `perf_counter_ns`, GC disabled, median + IQR over repeats                                                             |
+| `fit.py`        | Power-law estimation with bootstrap confidence intervals on the exponent                                                                           |
+| `analysis.py`   | `fit_table` / `format_fit_table` — the payoff layer                                                                                                |
+| `plot.py`       | Log-log plotting with fitted-curve overlays                                                                                                        |
+| `storage.py`    | JSON round-trip persistence and figure saving                                                                                                      |
 
 Reusable data structures live in `datastructures/` — a `SkipList` (skip-list sort), a
 `ZipZipTree` (best/first-fit bin packing), and a `Graph` (the network study) — each tested
@@ -101,11 +101,11 @@ uv run ruff check .
 ```
 
 Property-based tests (via [Hypothesis](https://hypothesis.readthedocs.io/)) check the
-invariants that must hold for *any* input — a skip list always yields a sorted permutation,
+invariants that must hold for _any_ input — a skip list always yields a sorted permutation,
 a zip-zip tree always satisfies the BST property, a graph always obeys the handshaking
 lemma. CI runs lint + tests on every push.
 
 ## Writeups
 
-Each study has a LaTeX report under its directory (`studies/*/…-writeup/` or `report/`)
+Each study has a LaTeX report under its directory `report/master.pdf`
 analyzing the results in depth.

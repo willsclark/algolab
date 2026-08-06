@@ -1,10 +1,4 @@
-"""Turning a result grid into a table of fitted complexities.
-
-This is the payoff layer: given an :class:`~algolab.results.ExperimentResult`,
-fit a power law for every (variant, condition) curve of one metric and present
-the exponents — with bootstrap confidence intervals — as a table ready to drop
-into a README or paper.
-"""
+"""Turning a result grid into a table of fitted complexities."""
 
 from __future__ import annotations
 
@@ -39,9 +33,7 @@ def fit_table(
     for variant in result.variants:
         for condition in result.conditions:
             sizes, values = result.series(variant, condition, metric, stat)
-            fit = fit_power_law(
-                sizes, values, min_n=min_n, bootstrap=bootstrap, seed=seed
-            )
+            fit = fit_power_law(sizes, values, min_n=min_n, bootstrap=bootstrap, seed=seed)
             lo, hi = fit.exponent_ci or (float("nan"), float("nan"))
             rows.append(
                 FitRow(

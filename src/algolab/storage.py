@@ -1,9 +1,4 @@
-"""Reading and writing experiment artifacts.
-
-Results serialize to a single JSON file per experiment via the pydantic schema;
-figures save alongside. Nothing here is study-specific — the same two calls
-persist sorting, bin-packing, and network results.
-"""
+"""Reading and writing experiment artifacts."""
 
 from __future__ import annotations
 
@@ -32,7 +27,8 @@ def save_result(result: ExperimentResult, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(result.model_dump_json(indent=2))
     except OSError as e:
-        raise OutputError(f"failed to write result to {path}") from e
+        msg = f"failed to write result to {path}"
+        raise OutputError(msg) from e
 
 
 def load_result(path: Path) -> ExperimentResult:
@@ -40,7 +36,8 @@ def load_result(path: Path) -> ExperimentResult:
     try:
         return ExperimentResult.model_validate_json(path.read_text())
     except OSError as e:
-        raise OutputError(f"failed to read result from {path}") from e
+        msg = f"failed to read result from {path}"
+        raise OutputError(msg) from e
 
 
 def save_figure(fig: Figure, path: Path) -> None:
@@ -49,6 +46,7 @@ def save_figure(fig: Figure, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(path)
     except OSError as e:
-        raise OutputError(f"failed to write figure to {path}") from e
+        msg = f"failed to write figure to {path}"
+        raise OutputError(msg) from e
     finally:
         close(fig)

@@ -15,6 +15,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
+import numpy.typing as npt
 
 
 @dataclass(frozen=True)
@@ -79,8 +80,8 @@ def _bootstrap_ci(
 
 
 def fit_power_law(
-    sizes: np.ndarray,
-    values: np.ndarray,
+    sizes: npt.ArrayLike,
+    values: npt.ArrayLike,
     min_n: int = 128,
     *,
     bootstrap: int = 0,

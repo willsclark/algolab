@@ -6,6 +6,7 @@ from .tim_sort import tim_sort
 type Key = int
 type Val = float
 type Bin = int
+type Capacity = float
 
 
 class BestFitTree(ZipZipTree[Key, Val]):
@@ -32,11 +33,8 @@ def _find_bin(tree: BestFitTree, size: float) -> ZipZipTree.Node | None:
     return best
 
 
-def best_fit(
-    items: list[float], assignment: list[int], free_space: list[float]
-) -> None:
+def best_fit(items: list[float], assignment: list[int], free_space: list[float]) -> None:
     """ """
-    type Capacity = float
 
     bin_capacity = 1.0
     tree = BestFitTree(capacity=max(len(items), 2))
